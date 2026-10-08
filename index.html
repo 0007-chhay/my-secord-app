@@ -458,10 +458,10 @@ function current(){$("link").value=etheapLink();const h=$("hon").value,n=$("name
 function message(hon,name,link){
   if(EN){
     const who=[enHon(hon),(name||"").trim()].filter(Boolean).join(" ");
-    return `Dear ${who},\n\nWe cordially invite you to attend the wedding ceremony of Van Chankrisna and Min Sreylak on 21 – 22 November 2026. Your presence would be a great honor to our family.\n\nClick here to open the invitation:\n${link}`;
+    return `Dear ${who},\n\nWe cordially invite you to attend the wedding ceremony of Van Chankrisna and Min Sreylak on 21 – 22 November 2026. Your presence would be a great honor to our family.\n\nClick here to open the invitation:\n\n${link}\n`;
   }
   const who=[hon,(name||"").trim()].filter(Boolean).join(" ");
-  return `សូមគោរពអញ្ជើញ ${who} ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ក្នុងពិធីសិរីមង្គលអាពាហ៍ពិពាហ៍ របស់ ${GROOM} និង ${BRIDE}។\n\nចុចទីនេះដើម្បីបើកសំបុត្រ\nClick here to open the invitation:\n${link||"(បញ្ចូល link)"}`;
+  return `សូមគោរពអញ្ជើញ ${who} ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ក្នុងពិធីសិរីមង្គលអាពាហ៍ពិពាហ៍ របស់ ${GROOM} និង ${BRIDE}។\n\nចុចទីនេះដើម្បីបើកសំបុត្រ\nClick here to open the invitation:\n\n${link||"(បញ្ចូល link)"}\n`;
 }
 let raf=0;
 function render(){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{const c=current();draw(c.hon,c.name,c.link);$("msg").value=message(c.hon,c.name,c.link);if(typeof prepareBlob==="function")prepareBlob();});}
