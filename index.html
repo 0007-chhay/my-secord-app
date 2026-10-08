@@ -109,8 +109,8 @@ button:disabled{opacity:.5;cursor:default}
     <section class="panel">
       <h2>សារសម្រាប់ផ្ញើជាមួយរូប</h2>
       <textarea id="msg" class="msgbox" readonly></textarea>
-      <div class="row"><button class="ghost" id="copy">ចម្លងសារ</button><button class="ghost" id="copyLink">ចម្លង Link តែឯង</button></div>
-      <p class="hint">រូបភាពចុចមិនបានទេ ដូច្នេះផ្ញើសារនេះរួមជាមួយរូប។ <b>Messenger៖</b> link ក្នុងសារវែងជួនកាលចុចមិនបើក ដូច្នេះផ្ញើ <b>Link តែឯង</b> ជាសារមួយទៀតនៅខាងក្រោម។</p>
+      <div class="row"><button class="ghost" id="copy">ចម្លងសារ (Telegram)</button><button class="ghost" id="copyLink">ចម្លង Link (Messenger)</button></div>
+      <p class="hint"><b>Telegram៖</b> ផ្ញើរូប + សារពេញ។ <b>Messenger៖</b> ផ្ញើរូប + <b>Link តែឯង</b> (Messenger ចុច link ក្នុងសារវែងមិនបើក)។ ប៊ូតុង «ផ្ញើតាម Telegram / Messenger» ផ្ញើរូប + link តែឯង។</p>
     </section>
 
     <section class="panel">
@@ -513,7 +513,7 @@ $("share").addEventListener("click",()=>{
   if(cached.key!==k||!cached.blob){$("status").textContent="កំពុងរៀបចំរូប… សូមចុចម្តងទៀត។";prepareBlob(0);return;}
   const fname=`សំបុត្រ-${safeName(c.name)}.png`;
   const file=new File([cached.blob],fname,{type:"image/png"});
-  const msg=message(c.hon,c.name,c.link);
+  const msg=c.link; // ផ្ញើតែរូប + link (Messenger អាន link ក្នុងសារវែងមិនបាន)
   // try image + caption together; fall back to image only where the platform refuses both
   let data={files:[file],text:msg};
   if(!(navigator.canShare&&navigator.canShare(data))) data={files:[file]};
@@ -521,7 +521,7 @@ $("share").addEventListener("click",()=>{
   // copy the message at the same time, because Messenger/Telegram usually drop text sent with an image
   try{navigator.clipboard&&navigator.clipboard.writeText(msg).catch(()=>{});}catch(e){}
   navigator.share(data).then(()=>{
-    $("status").textContent="បានផ្ញើ ✓ បើក្នុង chat មានតែរូប គ្មានសារ សូម Paste (Ctrl+V / ចុចជាប់ → Paste) ព្រោះសារត្រូវបានចម្លងរួចហើយ។";
+    $("status").textContent="បានផ្ញើ ✓ បើក្នុង chat មានតែរូប គ្មាន link សូម Paste (ចុចជាប់ → Paste) ព្រោះ link ត្រូវបានចម្លងរួចហើយ។";
   }).catch(e=>{
     if(e&&e.name==="AbortError")return;
     $("status").textContent="ផ្ញើមិនបាន ("+((e&&e.name)||"error")+")។ សូមចុចទាញយករូបភាពជំនួស។";
@@ -531,14 +531,14 @@ $("copy").addEventListener("click",async()=>{
   const t=$("msg").value;
   try{await navigator.clipboard.writeText(t);$("copy").textContent="បានចម្លង ✓";}
   catch(e){$("msg").focus();$("msg").select();$("copy").textContent="ចុច Ctrl+C / ចុចជាប់ ដើម្បីចម្លង";}
-  setTimeout(()=>{$("copy").textContent="ចម្លងសារ";},2200);
+  setTimeout(()=>{$("copy").textContent="ចម្លងសារ (Telegram)";},2200);
 });
 
 $("copyLink").addEventListener("click",async()=>{
   const t=current().link;
   try{await navigator.clipboard.writeText(t);$("copyLink").textContent="បានចម្លង ✓";}
   catch(e){prompt("ចម្លង link នេះ:",t);}
-  setTimeout(()=>{$("copyLink").textContent="ចម្លង Link តែឯង";},2200);
+  setTimeout(()=>{$("copyLink").textContent="ចម្លង Link (Messenger)";},2200);
 });
 
 function splitHon(line,fallback){for(const h of HONS){if(line===h)return{hon:h,name:""};if(line.startsWith(h+" "))return{hon:h,name:line.slice(h.length).trim()};}return{hon:fallback,name:line};}
