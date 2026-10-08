@@ -182,7 +182,7 @@ function etheapLink(){return ETHEAP_LINKS[THEME]||ETHEAP_BASE;}
 // link ផ្ទាល់ខ្លួនសម្រាប់ភ្ញៀវម្នាក់ៗ: ?h=លេខការគោរព&n=ឈ្មោះ(base64) → ស្រោមសំបុត្របង្ហាញឈ្មោះភ្ញៀវ
 const ENV_HONS=["លោក លោកស្រី","លោក","លោកស្រី","អ្នកនាង","កញ្ញា","លោកគ្រូ","អ្នកគ្រូ","ឯកឧត្តម លោកជំទាវ","បងប្អូន","Mr.","Ms.","Mrs.","Mr. & Mrs."];
 function b64u(t){const b=new TextEncoder().encode(t);let s="";b.forEach(x=>s+=String.fromCharCode(x));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
-function personalLink(hon,name){const n=(name||"").trim();if(!n)return etheapLink();const h=ENV_HONS.indexOf(hon);return etheapLink()+"?"+(h>=0?"h="+h+"&":"")+"n="+b64u(n);}
+function personalLink(hon,name){const n=(name||"").trim();if(!n)return etheapLink();const h=ENV_HONS.indexOf(hon);const base=etheapLink();return base+(base.endsWith(".html")?"":"/")+"#"+(h>=0?"h="+h+"&":"")+"n="+b64u(n);}
 const savedHon=sget("etheap_hon"); if(savedHon) $("hon").value=savedHon;
 const savedLang=sget("etheap_lang"); if(savedLang){$("lang").value=savedLang;}
 const savedTh=sget("etheap_theme"); if(savedTh){$("theme").value=savedTh;}
@@ -350,7 +350,7 @@ function drawLandscape(hon,name,link){
   text("Excellencies, Ladies and Gentlemen, your presence is a great honor to our family.",bcx,by+140,LATIN,20,T.label,bwid-40);}
 
   // footer
-  const shown=link?link.replace(/\?.*$/,"").replace(/^https?:\/\//,"").replace(/\/$/,""):"link សំបុត្ររបស់អ្នក";
+  const shown=link?link.replace(/[?#].*$/,"").replace(/^https?:\/\//,"").replace(/\/$/,""):"link សំបុត្ររបស់អ្នក";
   text(EN?"Open the invitation via the link in the message":"បើកសំបុត្រតាម Link ក្នុងសារ",W/2,888,EN?LATIN:KM_BODY,EN?16:20,T.sub);
   text(shown,W/2,918,KM_BODY,24,T.link,900);
   text(EN?"21 – 22 November 2026":"Wedding Ceremony",W/2,958,LATIN,26,"gold");
@@ -435,7 +435,7 @@ function draw(hon,name,link){
   text("Excellencies, Ladies and Gentlemen, your presence is a great honor to our family.",W/2,by+150,LATIN,22,T.label,bwid-40);}
 
   // link + footer
-  const shown=link?link.replace(/\?.*$/,"").replace(/^https?:\/\//,"").replace(/\/$/,""):"link សំបុត្ររបស់អ្នក";
+  const shown=link?link.replace(/[?#].*$/,"").replace(/^https?:\/\//,"").replace(/\/$/,""):"link សំបុត្ររបស់អ្នក";
   text(EN?"Open the invitation via the link in the message":"បើកសំបុត្រតាម Link ក្នុងសារ",W/2,1298,EN?LATIN:KM_BODY,EN?18:22,T.sub);
   text(shown,W/2,1332,KM_BODY,24,T.link,W-2*bw-120);
   divider(W/2,1362,220);
