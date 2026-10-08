@@ -182,7 +182,19 @@ function etheapLink(){return ETHEAP_LINKS[THEME]||ETHEAP_BASE;}
 // link ផ្ទាល់ខ្លួនសម្រាប់ភ្ញៀវម្នាក់ៗ: ?h=លេខការគោរព&n=ឈ្មោះ(base64) → ស្រោមសំបុត្របង្ហាញឈ្មោះភ្ញៀវ
 const ENV_HONS=["លោក លោកស្រី","លោក","លោកស្រី","អ្នកនាង","កញ្ញា","លោកគ្រូ","អ្នកគ្រូ","ឯកឧត្តម លោកជំទាវ","បងប្អូន","Mr.","Ms.","Mrs.","Mr. & Mrs."];
 function b64u(t){const b=new TextEncoder().encode(t);let s="";b.forEach(x=>s+=String.fromCharCode(x));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
-function personalLink(hon,name){const n=(name||"").trim();if(!n)return etheapLink();const h=ENV_HONS.indexOf(hon);const base=etheapLink();return base+(base.endsWith(".html")?"":"/")+"#"+(h>=0?"h="+h+"&":"")+"n="+b64u(n);}
+// លេខកូដខ្លី #g=12 (រក្សាទុកក្នុង Upstash របស់ធៀប); បើមិនទាន់បានលេខ ប្រើ #h=&n= ជាបណ្តោះអាសន្ន
+const GID={}, GPEND={};
+function gkey(hon,name){return hon+"|"+(name||"").trim();}
+function fetchGid(hon,name){const k=gkey(hon,name);if(GID[k])return Promise.resolve(GID[k]);if(GPEND[k])return GPEND[k];
+  GPEND[k]=fetch(ETHEAP_BASE+"/api/guest",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({hon,name:(name||"").trim()})})
+    .then(r=>r.json()).then(d=>{if(d&&d.id){GID[k]=d.id;return d.id;}return null;}).catch(()=>null).finally(()=>{delete GPEND[k];});
+  return GPEND[k];}
+function personalLink(hon,name){const n=(name||"").trim();if(!n)return etheapLink();const base=etheapLink();const pre=base+(base.endsWith(".html")?"":"/")+"#";
+  const id=GID[gkey(hon,n)]; if(id) return pre+"g="+id;
+  const h=ENV_HONS.indexOf(hon);return pre+(h>=0?"h="+h+"&":"")+"n="+b64u(n);}
+let gidTimer=0;
+function wantGid(){clearTimeout(gidTimer);const h=$("hon").value,n=$("name").value.trim();if(!n||GID[gkey(h,n)])return;
+  gidTimer=setTimeout(()=>{fetchGid(h,n).then(id=>{if(id&&$("hon").value===h&&$("name").value.trim()===n){cached={key:"",blob:null};render();}});},700);}
 const savedHon=sget("etheap_hon"); if(savedHon) $("hon").value=savedHon;
 const savedLang=sget("etheap_lang"); if(savedLang){$("lang").value=savedLang;}
 const savedTh=sget("etheap_theme"); if(savedTh){$("theme").value=savedTh;}
@@ -442,7 +454,7 @@ function draw(hon,name,link){
   text(EN?"21 – 22 November 2026":"Wedding Ceremony",W/2,1404,LATIN,30,"gold");
 }
 
-function current(){$("link").value=etheapLink();const h=$("hon").value,n=$("name").value;return{hon:h,name:n,link:personalLink(h,n)};}
+function current(){$("link").value=etheapLink();const h=$("hon").value,n=$("name").value;wantGid();return{hon:h,name:n,link:personalLink(h,n)};}
 function message(hon,name,link){
   if(EN){
     const who=[enHon(hon),(name||"").trim()].filter(Boolean).join(" ");
@@ -534,6 +546,7 @@ $("zip").addEventListener("click",async()=>{
   for(let i=0;i<lines.length;i++){
     const p=splitHon(lines[i],c.hon);
     $("zipStatus").textContent=`កំពុងបង្កើត ${i+1}/${lines.length}…`;
+    await fetchGid(p.hon,p.name);
     const pl=personalLink(p.hon,p.name);
     draw(p.hon,p.name,pl);
     let fn=`${String(i+1).padStart(3,"0")}-${safeName(p.name)}.png`;
