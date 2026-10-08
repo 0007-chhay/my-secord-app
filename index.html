@@ -109,8 +109,8 @@ button:disabled{opacity:.5;cursor:default}
     <section class="panel">
       <h2>សារសម្រាប់ផ្ញើជាមួយរូប</h2>
       <textarea id="msg" class="msgbox" readonly></textarea>
-      <div class="row"><button class="ghost" id="copy">ចម្លងសារ</button></div>
-      <p class="hint">រូបភាពចុចមិនបានទេ ដូច្នេះផ្ញើសារនេះរួមជាមួយរូប ដើម្បីឲ្យភ្ញៀវចុច link បើកសំបុត្របានភ្លាម។</p>
+      <div class="row"><button class="ghost" id="copy">ចម្លងសារ</button><button class="ghost" id="copyLink">ចម្លង Link តែឯង</button></div>
+      <p class="hint">រូបភាពចុចមិនបានទេ ដូច្នេះផ្ញើសារនេះរួមជាមួយរូប។ <b>Messenger៖</b> link ក្នុងសារវែងជួនកាលចុចមិនបើក ដូច្នេះផ្ញើ <b>Link តែឯង</b> ជាសារមួយទៀតនៅខាងក្រោម។</p>
     </section>
 
     <section class="panel">
@@ -532,6 +532,13 @@ $("copy").addEventListener("click",async()=>{
   try{await navigator.clipboard.writeText(t);$("copy").textContent="បានចម្លង ✓";}
   catch(e){$("msg").focus();$("msg").select();$("copy").textContent="ចុច Ctrl+C / ចុចជាប់ ដើម្បីចម្លង";}
   setTimeout(()=>{$("copy").textContent="ចម្លងសារ";},2200);
+});
+
+$("copyLink").addEventListener("click",async()=>{
+  const t=current().link;
+  try{await navigator.clipboard.writeText(t);$("copyLink").textContent="បានចម្លង ✓";}
+  catch(e){prompt("ចម្លង link នេះ:",t);}
+  setTimeout(()=>{$("copyLink").textContent="ចម្លង Link តែឯង";},2200);
 });
 
 function splitHon(line,fallback){for(const h of HONS){if(line===h)return{hon:h,name:""};if(line.startsWith(h+" "))return{hon:h,name:line.slice(h.length).trim()};}return{hon:fallback,name:line};}
