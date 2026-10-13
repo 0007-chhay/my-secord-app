@@ -198,8 +198,9 @@ function personalLink(hon,name){const n=(name||"").trim();if(!n)return etheapLin
   const id=GID[gkey(hon,n)]; if(id) return pre+"g="+id;
   const h=ENV_HONS.indexOf(hon);return pre+(h>=0?"h="+h+"&":"")+"n="+b64u(n);}
 let gidTimer=0;
-function wantGid(){clearTimeout(gidTimer);const h=$("hon").value,n=$("name").value.trim();if(!n||GID[gkey(h,n)])return;
-  gidTimer=setTimeout(()=>{fetchGid(h,n).then(id=>{if(id&&$("hon").value===h&&$("name").value.trim()===n){cached={key:"",blob:null};render();}});},700);}
+// ចុះឈ្មោះភ្ញៀវតែពេលចុចប៊ូតុង (ទាញយក/ផ្ញើ/ចម្លង/zip) មិនមែនពេលកំពុងវាយ — ការពារឈ្មោះមិនពេញចូល database
+function wantGid(){const h=$("hon").value,n=$("name").value.trim();if(!n)return Promise.resolve(null);const k=gkey(h,n);if(GID[k])return Promise.resolve(GID[k]);
+  return fetchGid(h,n).then(id=>{if(id){cached={key:"",blob:null};render();}return id;});}
 const savedHon=sget("etheap_hon"); if(savedHon) $("hon").value=savedHon;
 const savedLang=sget("etheap_lang"); if(savedLang){$("lang").value=savedLang;}
 const savedTh=sget("etheap_theme"); if(savedTh){$("theme").value=savedTh;}
@@ -475,7 +476,7 @@ function draw(hon,name,link){
   }
 }
 
-function current(){$("link").value=etheapLink();const h=$("hon").value,n=$("name").value;wantGid();return{hon:h,name:n,link:personalLink(h,n)};}
+function current(){$("link").value=etheapLink();const h=$("hon").value,n=$("name").value;return{hon:h,name:n,link:personalLink(h,n)};}
 function message(hon,name,link){
   if(EN){
     const who=[enHon(hon),(name||"").trim()].filter(Boolean).join(" ");
@@ -516,6 +517,7 @@ function prepareBlob(delay){
   },delay==null?300:delay);
 }
 $("dl").addEventListener("click",async()=>{
+  await wantGid();
   const c=current();
   if(!c.link){$("status").textContent="សូមបញ្ចូល link សំបុត្រជាមុនសិន ដើម្បីឲ្យ QR ដំណើរការ។";$("link").focus();return;}
   draw(c.hon,c.name,c.link);
@@ -528,6 +530,8 @@ if(navigator.canShare){try{if(navigator.canShare({files:[new File([""],"t.png",{
 // Safari/iPhone only allow the share sheet if it opens immediately on tap,
 // so the card image is prepared in advance and handed over without waiting.
 $("share").addEventListener("click",()=>{
+  {const h0=$("hon").value,n0=$("name").value.trim();
+   if(n0&&!GID[gkey(h0,n0)]){$("status").textContent="កំពុងរៀបចំ link… សូមចុចផ្ញើម្តងទៀត។";wantGid().then(()=>prepareBlob(0));return;}}
   const c=current();
   if(!c.link){$("status").textContent="សូមបញ្ចូល link សំបុត្រជាមុនសិន។";return;}
   const k=stateKey(c);
@@ -549,13 +553,15 @@ $("share").addEventListener("click",()=>{
   });
 });
 $("copy").addEventListener("click",async()=>{
-  const t=$("msg").value;
+  await wantGid();
+  const c0=current(); const t=message(c0.hon,c0.name,c0.link); $("msg").value=t;
   try{await navigator.clipboard.writeText(t);$("copy").textContent="បានចម្លង ✓";}
   catch(e){$("msg").focus();$("msg").select();$("copy").textContent="ចុច Ctrl+C / ចុចជាប់ ដើម្បីចម្លង";}
   setTimeout(()=>{$("copy").textContent="ចម្លងសារ (Telegram)";},2200);
 });
 
 $("copyLink").addEventListener("click",async()=>{
+  await wantGid();
   const t=current().link;
   try{await navigator.clipboard.writeText(t);$("copyLink").textContent="បានចម្លង ✓";}
   catch(e){prompt("ចម្លង link នេះ:",t);}
