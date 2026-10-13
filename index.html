@@ -68,8 +68,8 @@ button:disabled{opacity:.5;cursor:default}
       <h2>ព័ត៌មានភ្ញៀវ</h2>
       <label for="lang">ភាសាកាត</label>
       <select id="lang">
-        <option value="km">ខ្មែរ + English</option>
-        <option value="en">English only</option>
+         <option value="km">ខ្មែរ</option>
+        <option value="en">English</option>
       </select>
       <label for="theme">ស្តាយកាត</label>
       <select id="theme">
@@ -319,14 +319,15 @@ function drawLandscape(hon,name,link){
     text("Van Chankrisna",W/2-260,232,SCRIPT,56,"gold",320);
     text("Min Sreylak",W/2+260,232,SCRIPT,56,"gold",320);
   }else{
-  text("ពិធីសិរីមង្គលអាពាហ៍ពិពាហ៍",W/2,118,KM_TITLE,60,"gold",1100);
-  text("កូនប្រុសនាម",W/2-260,178,KM_BODY,22,T.label);
-  text("កូនស្រីនាម",W/2+260,178,KM_BODY,22,T.label);
-  text(GROOM,W/2-260,228,KM_TITLE,36,"gold",300);
-  text(BRIDE,W/2+260,228,KM_TITLE,36,"gold",300);
+    text("ពិធីសិរីមង្គលអាពាហ៍ពិពាហ៍",W/2,118,KM_TITLE,60,"gold",1100);
+    text("កូនប្រុសនាម",W/2-260,178,KM_BODY,22,T.label);
+    text("កូនស្រីនាម",W/2+260,178,KM_BODY,22,T.label);
+    text(GROOM,W/2-260,228,KM_TITLE,36,"gold",300);
+    text(BRIDE,W/2+260,228,KM_TITLE,36,"gold",300);
   }
   if(EN){text("&",W/2,226,SCRIPT,72,"gold");}
-  else if(mono.naturalWidth){const mh=74,mw=mh*mono.naturalWidth/mono.naturalHeight;ctx.drawImage(mono,W/2-mw/2,200-mh/2,mw,mh);}else diamond(W/2,214,11,T.dia);
+  else if(mono.naturalWidth){const mh=74,mw=mh*mono.naturalWidth/mono.naturalHeight;ctx.drawImage(mono,W/2-mw/2,200-mh/2,mw,mh);}
+  else diamond(W/2,214,11,T.dia);
 
   // photo (left)
   const px=130,py=270,pw=380,ph=Math.round(pw*photo.naturalHeight/photo.naturalWidth);
@@ -337,7 +338,7 @@ function drawLandscape(hon,name,link){
   // invitation (middle)
   const cx=820, colW=480;
   if(EN){text("Together with our families",cx,335,LATIN,20,T.sub,colW);text("we cordially invite",cx,374,LATIN,28,T.body,colW);}
-  else{text("សូមគោរពអញ្ជើញ",cx,335,KM_BODY,30,T.body);text("We cordially invite",cx,374,LATIN,22,T.sub,colW);}
+  else{text("សូមគោរពអញ្ជើញ",cx,362,KM_BODY,32,T.body);}
   const hh=EN?enHon(hon):hon;
   text(hh,cx,438,isKh(hh)?KM_TITLE:LATIN,isKh(hh)?36:38,"gold",colW);
   const nm=(name||"").trim()||(EN?"Guest Name":"ឈ្មោះភ្ញៀវ");
@@ -353,7 +354,7 @@ function drawLandscape(hon,name,link){
   if(link){ctx.imageSmoothingEnabled=false;ctx.drawImage(qrCanvas(link),qx,qy,qs,qs);ctx.imageSmoothingEnabled=true;}
   else{text("បញ្ចូល link",qcx,qy+qs/2,KM_BODY,26,"#9a7a4a");}
   if(EN){text("Scan to open",qcx,qy+qs+58,LATIN,22,T.body,340);text("the invitation",qcx,qy+qs+92,LATIN,18,T.sub,340);}
-  else{text("ស្កេនដើម្បីបើកសំបុត្រ",qcx,qy+qs+60,KM_BODY,24,T.body,340);text("Scan to open the invitation",qcx,qy+qs+96,LATIN,18,T.sub,340);}
+  else{text("ស្កេនដើម្បីបើកសំបុត្រ",qcx,qy+qs+70,KM_BODY,26,T.body,340);}
 
   // honour band (middle + right)
   const bx=570,by=690,bwid=W-bw-80-bx,bh=160;
@@ -362,21 +363,24 @@ function drawLandscape(hon,name,link){
   [[bx,by],[bx+bwid,by],[bx,by+bh],[bx+bwid,by+bh]].forEach(([x,y])=>diamond(x,y,10,T.dia));
   const bcx=bx+bwid/2;
   if(EN){text("Excellencies, Ladies and Gentlemen,",bcx,by+64,LATIN,26,"gold",bwid-60);text("your presence is a great honor to our family.",bcx,by+112,LATIN,24,"gold",bwid-60);}
-  else{  text("វត្តមានរបស់ឯកឧត្តម លោក លោកស្រី",bcx,by+52,KM_TITLE,27,"gold",bwid-80);
-  text("ជាកិត្តិយសដ៏ឧត្តុងឧត្ដម របស់គ្រួសារយើងខ្ញុំ",bcx,by+100,KM_TITLE,27,"gold",bwid-80);
-  text("Excellencies, Ladies and Gentlemen, your presence is a great honor to our family.",bcx,by+140,LATIN,20,T.label,bwid-40);}
+  else{
+    text("វត្តមានរបស់ឯកឧត្តម លោក លោកស្រី",bcx,by+66,KM_TITLE,29,"gold",bwid-80);
+    text("ជាកិត្តិយសដ៏ឧត្តុងឧត្ដម របស់គ្រួសារយើងខ្ញុំ",bcx,by+118,KM_TITLE,29,"gold",bwid-80);
+  }
 
-  // footer
-   // ថ្ងៃខែ + ទីតាំង + footer
+  // ថ្ងៃខែ + ទីតាំង + footer
   const fw=W-2*bw-140;
   if(EN){
-    text(VENUE_EN_DATE+"  ·  "+VENUE_EN_PLACE,W/2,896,LATIN,20,T.body,fw);
+    text(VENUE_EN_DATE,W/2,890,LATIN,22,T.body,fw);
+    text(VENUE_EN_PLACE,W/2,922,LATIN,17,T.sub,fw);
+    text("Wedding Ceremony",W/2,960,LATIN,24,"gold");
   }else{
-    text(VENUE_KM_DATE+"  ·  "+VENUE_KM_PLACE,W/2,886,KM_BODY,20,T.body,fw);
-    text(VENUE_EN_DATE+"  ·  "+VENUE_EN_PLACE,W/2,918,LATIN,16,T.label,fw);
+    text(VENUE_KM_DATE,W/2,892,KM_BODY,24,T.body,fw);
+    text(VENUE_KM_PLACE,W/2,930,KM_BODY,19,T.sub,fw);
+    divider(W/2,958,200);
   }
-  text("Wedding Ceremony",W/2,958,LATIN,24,"gold");
 }
+
 function setOrient(o){
   ORIENT=o==="landscape"?"landscape":"portrait";
   W=ORIENT==="landscape"?1600:1080; H=ORIENT==="landscape"?1000:1440;
@@ -392,7 +396,7 @@ function draw(hon,name,link){
   bg.addColorStop(0,T.bg0);bg.addColorStop(1,T.bg1);
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 
-  // delicate kbach vine borders, drawn by hand on the canvas
+  // kbach vine borders
   const bw=62;
   ctx.fillStyle=T.band;ctx.fillRect(0,0,bw,H);ctx.fillRect(W-bw,0,bw,H);
   ctx.fillStyle=T.line;ctx.fillRect(bw-1,0,1.5,H);ctx.fillRect(W-bw,0,1.5,H);
@@ -408,14 +412,15 @@ function draw(hon,name,link){
     text("Van Chankrisna",W*0.3,270,SCRIPT,58,"gold",320);
     text("Min Sreylak",W*0.7,270,SCRIPT,58,"gold",320);
   }else{
-  text("ពិធីសិរីមង្គលអាពាហ៍ពិពាហ៍",W/2,138,KM_TITLE,60,"gold",W-2*bw-110);
-  text("កូនប្រុសនាម",W*0.3,212,KM_BODY,24,T.label);
-  text("កូនស្រីនាម",W*0.7,212,KM_BODY,24,T.label);
-  text(GROOM,W*0.3,268,KM_TITLE,36,"gold",300);
-  text(BRIDE,W*0.7,268,KM_TITLE,36,"gold",300);
+    text("ពិធីសិរីមង្គលអាពាហ៍ពិពាហ៍",W/2,138,KM_TITLE,60,"gold",W-2*bw-110);
+    text("កូនប្រុសនាម",W*0.3,212,KM_BODY,24,T.label);
+    text("កូនស្រីនាម",W*0.7,212,KM_BODY,24,T.label);
+    text(GROOM,W*0.3,268,KM_TITLE,36,"gold",300);
+    text(BRIDE,W*0.7,268,KM_TITLE,36,"gold",300);
   }
   if(EN){text("&",W/2,262,SCRIPT,76,"gold");}
-  else if(mono.naturalWidth){const mh=78,mw=mh*mono.naturalWidth/mono.naturalHeight;ctx.drawImage(mono,W/2-mw/2,236-mh/2,mw,mh);}else diamond(W/2,252,11,T.dia);
+  else if(mono.naturalWidth){const mh=78,mw=mh*mono.naturalWidth/mono.naturalHeight;ctx.drawImage(mono,W/2-mw/2,236-mh/2,mw,mh);}
+  else diamond(W/2,252,11,T.dia);
 
   // photo
   const px=118,py=318,pw=430,ph=Math.round(430*photo.naturalHeight/photo.naturalWidth);
@@ -426,12 +431,12 @@ function draw(hon,name,link){
   // invitation column
   const cx=(px+pw+W-bw)/2+6, colW=W-bw-(px+pw)-80;
   if(EN){text("Together with our families",cx,368,LATIN,20,T.sub,colW);text("we cordially invite",cx,408,LATIN,28,T.body,colW);}
-  else{text("សូមគោរពអញ្ជើញ",cx,368,KM_BODY,30,T.body);text("We cordially invite",cx,408,LATIN,22,T.sub,colW);}
+  else{text("សូមគោរពអញ្ជើញ",cx,396,KM_BODY,32,T.body);}
   const isKh=t=>/[\u1780-\u17FF]/.test(t);
   const hh=EN?enHon(hon):hon;
   text(hh,cx,470,isKh(hh)?KM_TITLE:LATIN,isKh(hh)?36:38,"gold",colW);
   const nm=(name||"").trim()||(EN?"Guest Name":"ឈ្មោះភ្ញៀវ");
-  const lines=wrapName(nm,/[\u1780-\u17FF]/.test(nm)?KM_TITLE:LATIN,58,colW);
+  const lines=wrapName(nm,isKh(nm)?KM_TITLE:LATIN,58,colW);
   let ny=lines.length>1?556:578;
   for(const l of lines){text(l,cx,ny,isKh(l)?KM_TITLE:LATIN,isKh(l)?58:54,(name||"").trim()?"gold":T.ph,colW);ny+=74;}
   const dy=lines.length>1?ny-18:628;
@@ -444,31 +449,30 @@ function draw(hon,name,link){
   if(link){ctx.imageSmoothingEnabled=false;ctx.drawImage(qrCanvas(link),qx,qy,qs,qs);ctx.imageSmoothingEnabled=true;}
   else{text("បញ្ចូល link",cx,qy+qs/2,KM_BODY,26,"#9a7a4a");text("ដើម្បីបង្កើត QR",cx,qy+qs/2+40,KM_BODY,22,"#9a7a4a");}
   if(EN){text("Scan to open",cx,qy+qs+66,LATIN,24,T.body,colW);text("the invitation",cx,qy+qs+102,LATIN,20,T.sub,colW);}
-  else{text("ស្កេនដើម្បីបើកសំបុត្រ",cx,qy+qs+68,KM_BODY,26,T.body,colW);text("Scan to open the invitation",cx,qy+qs+106,LATIN,20,T.sub,colW);}
+  else{text("ស្កេនដើម្បីបើកសំបុត្រ",cx,qy+qs+76,KM_BODY,28,T.body,colW);}
 
-  // honour band (plain ornament, not a button, since guests receive a photo)
+  // honour band
   const bx=150,by=1082,bwid=W-300,bh=172;
   ctx.strokeStyle=T.edge;ctx.lineWidth=2;ctx.strokeRect(bx,by,bwid,bh);
   ctx.strokeStyle=T.edgeSoft;ctx.lineWidth=1.5;ctx.strokeRect(bx+10,by+10,bwid-20,bh-20);
   [[bx,by],[bx+bwid,by],[bx,by+bh],[bx+bwid,by+bh]].forEach(([x,y])=>diamond(x,y,10,T.dia));
   if(EN){text("Excellencies, Ladies and Gentlemen,",W/2,by+72,LATIN,30,"gold",bwid-60);text("your presence is a great honor to our family.",W/2,by+124,LATIN,27,"gold",bwid-60);}
-  else{  text("វត្តមានរបស់ឯកឧត្តម លោក លោកស្រី",W/2,by+56,KM_TITLE,30,"gold",bwid-80);
-  text("ជាកិត្តិយសដ៏ឧត្តុងឧត្ដម របស់គ្រួសារយើងខ្ញុំ",W/2,by+108,KM_TITLE,30,"gold",bwid-80);
-  text("Excellencies, Ladies and Gentlemen, your presence is a great honor to our family.",W/2,by+150,LATIN,22,T.label,bwid-40);}
+  else{
+    text("វត្តមានរបស់ឯកឧត្តម លោក លោកស្រី",W/2,by+72,KM_TITLE,32,"gold",bwid-80);
+    text("ជាកិត្តិយសដ៏ឧត្តុងឧត្ដម របស់គ្រួសារយើងខ្ញុំ",W/2,by+128,KM_TITLE,32,"gold",bwid-80);
+  }
 
-  // link + footer
-    // ថ្ងៃខែ + ទីតាំង + footer
+  // ថ្ងៃខែ + ទីតាំង + footer
   const fw=W-2*bw-120;
   if(EN){
-    text(VENUE_EN_DATE,W/2,1306,LATIN,24,T.body,fw);
-    text(VENUE_EN_PLACE,W/2,1346,LATIN,18,T.sub,fw);
+    text(VENUE_EN_DATE,W/2,1300,LATIN,26,T.body,fw);
+    text(VENUE_EN_PLACE,W/2,1342,LATIN,19,T.sub,fw);
+    text("Wedding Ceremony",W/2,1404,LATIN,26,"gold");
   }else{
-    text(VENUE_KM_DATE,W/2,1294,KM_BODY,23,T.body,fw);
-    text(VENUE_KM_PLACE,W/2,1326,KM_BODY,19,T.sub,fw);
-    text(VENUE_EN_DATE,W/2,1354,LATIN,17,T.label,fw);
-    text(VENUE_EN_PLACE,W/2,1376,LATIN,14,T.sub,fw);
+    text(VENUE_KM_DATE,W/2,1306,KM_BODY,27,T.body,fw);
+    text(VENUE_KM_PLACE,W/2,1348,KM_BODY,21,T.sub,fw);
+    divider(W/2,1390,220);
   }
-  text("Wedding Ceremony",W/2,1408,LATIN,26,"gold");
 }
 
 function current(){$("link").value=etheapLink();const h=$("hon").value,n=$("name").value;wantGid();return{hon:h,name:n,link:personalLink(h,n)};}
