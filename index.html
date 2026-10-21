@@ -92,6 +92,7 @@ button:disabled{opacity:.5;cursor:default}
         <option>អ្នកគ្រូ</option>
         <option>ឯកឧត្តម លោកជំទាវ</option>
         <option>បងប្អូន</option>
+        <option>សម្លាញ់</option>
         <option>Mr.</option>
         <option>Ms.</option>
         <option>Mrs.</option>
@@ -158,7 +159,7 @@ const KM_TITLE='"Moul","Khmer OS Muol Light",serif';
 const KM_BODY='"Battambang","Khmer OS","Noto Sans Khmer",sans-serif';
 const LATIN='"Cinzel","Times New Roman",serif';
 const SCRIPT='"Great Vibes","Brush Script MT",cursive';
-const HONS=["Mr. & Mrs.","Mrs.","Mr.","Ms.","ឯកឧត្តម លោកជំទាវ","លោក លោកស្រី","លោកស្រី","លោកគ្រូ","អ្នកគ្រូ","អ្នកនាង","កញ្ញា","បងប្អូន","លោក"];
+const HONS=["Mr. & Mrs.","Mrs.","Mr.","Ms.","ឯកឧត្តម លោកជំទាវ","លោក លោកស្រី","លោកស្រី","លោកគ្រូ","អ្នកគ្រូ","អ្នកនាង","កញ្ញា","បងប្អូន","សម្លាញ់","លោក"];
 
 
 const THEMES={
@@ -172,7 +173,7 @@ const THEMES={
     edge:"#d6bf7c",edgeSoft:"rgba(214,191,124,.35)",qrBg:"#f8f3e1",qrDark:"#1f2a12",dia:"#ead59a",dia2:"#b9a05c",div:"222,203,140"}
 };
 let THEME="brown", T=THEMES.brown, EN=false;
-const EN_HON={"លោក លោកស្រី":"Mr. & Mrs.","លោក":"Mr.","លោកស្រី":"Mrs.","អ្នកនាង":"Madam","កញ្ញា":"Ms.","លោកគ្រូ":"Teacher","អ្នកគ្រូ":"Teacher","ឯកឧត្តម លោកជំទាវ":"H.E. & Lok Chumteav","បងប្អូន":"Dear Friends"};
+const EN_HON={"លោក លោកស្រី":"Mr. & Mrs.","លោក":"Mr.","លោកស្រី":"Mrs.","អ្នកនាង":"Madam","កញ្ញា":"Ms.","លោកគ្រូ":"Teacher","អ្នកគ្រូ":"Teacher","ឯកឧត្តម លោកជំទាវ":"H.E. & Lok Chumteav","បងប្អូន":"Dear Friends","សម្លាញ់":"Dear Friend"};
 function enHon(h){return EN_HON[h]||h;}
 function setTheme(t){THEME=THEMES[t]?t:"brown";T=THEMES[THEME];photo=THEME==="green"?photo2:photo1;inkCache.clear();}
 
@@ -185,7 +186,7 @@ const ETHEAP_BASE="https://wedding-invitation-gilt-eight.vercel.app";
 const ETHEAP_LINKS={brown:ETHEAP_BASE,green:ETHEAP_BASE+"/green.html"};
 function etheapLink(){return ETHEAP_LINKS[THEME]||ETHEAP_BASE;}
 // link ផ្ទាល់ខ្លួនសម្រាប់ភ្ញៀវម្នាក់ៗ: ?h=លេខការគោរព&n=ឈ្មោះ(base64) → ស្រោមសំបុត្របង្ហាញឈ្មោះភ្ញៀវ
-const ENV_HONS=["លោក លោកស្រី","លោក","លោកស្រី","អ្នកនាង","កញ្ញា","លោកគ្រូ","អ្នកគ្រូ","ឯកឧត្តម លោកជំទាវ","បងប្អូន","Mr.","Ms.","Mrs.","Mr. & Mrs."];
+const ENV_HONS=["លោក លោកស្រី","លោក","លោកស្រី","អ្នកនាង","កញ្ញា","លោកគ្រូ","អ្នកគ្រូ","ឯកឧត្តម លោកជំទាវ","បងប្អូន","Mr.","Ms.","Mrs.","Mr. & Mrs.","សម្លាញ់"];
 function b64u(t){const b=new TextEncoder().encode(t);let s="";b.forEach(x=>s+=String.fromCharCode(x));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
 // លេខកូដខ្លី #g=12 (រក្សាទុកក្នុង Upstash របស់ធៀប); បើមិនទាន់បានលេខ ប្រើ #h=&n= ជាបណ្តោះអាសន្ន
 const GID={}, GPEND={};
